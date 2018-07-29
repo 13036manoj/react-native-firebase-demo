@@ -1,99 +1,143 @@
-import React from 'react';
-import { StyleSheet, Platform, Image, Text, View, ScrollView } from 'react-native';
+
+import React from 'react'
+import { StyleSheet, Platform, Image, Text, View } from 'react-native'
+import { SwitchNavigator } from 'react-navigation'
 
 import firebase from 'react-native-firebase';
+var config = {
+  apiKey: "AIzaSyDM-baYsuac1CX_0otr00pvXrGtZeU-QjY",
+  authDomain: "testingfirebase-2bfc6.firebaseapp.com",
+  databaseURL: "https://testingfirebase-2bfc6.firebaseio.com",
+  projectId: "testingfirebase-2bfc6",
+  storageBucket: "testingfirebase-2bfc6.appspot.com",
+  messagingSenderId: "428644299263",
+};
+firebase.initializeApp(config);
 
-export default class App extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      // firebase things?
-    };
+// import the different screens
+import Loading from './screen/loading'
+import SignUp from './screen/signUp'
+import Login from './screen/login'
+import Main from './screen/main'
+// create our app's navigation stack
+const App = SwitchNavigator(
+  {
+    Loading,
+    SignUp,
+    Login,
+    Main
+  },
+  {
+    initialRouteName: 'Loading'
   }
+)
+export default App
 
-  componentDidMount() {
-    // firebase things?
-  }
 
-  render() {
-    return (
-      <ScrollView>
-        <View style={styles.container}>
-          <Image source={require('./assets/RNFirebase.png')} style={[styles.logo]}/>
-          <Text style={styles.welcome}>
-            Welcome to {'\n'} React Native Firebase
-          </Text>
-          <Text style={styles.instructions}>
-            To get started, edit App.js
-          </Text>
-          {Platform.OS === 'ios' ? (
-            <Text style={styles.instructions}>
-              Press Cmd+R to reload,{'\n'}
-              Cmd+D or shake for dev menu
-            </Text>
-          ) : (
-            <Text style={styles.instructions}>
-              Double tap R on your keyboard to reload,{'\n'}
-              Cmd+M or shake for dev menu
-            </Text>
-          )}
-          <View style={styles.modules}>
-            <Text style={styles.modulesHeader}>The following Firebase modules are pre-installed:</Text>
-            {firebase.admob.nativeModuleExists && <Text style={styles.module}>admob()</Text>}
-            {firebase.analytics.nativeModuleExists && <Text style={styles.module}>analytics()</Text>}
-            {firebase.auth.nativeModuleExists && <Text style={styles.module}>auth()</Text>}
-            {firebase.config.nativeModuleExists && <Text style={styles.module}>config()</Text>}
-            {firebase.crashlytics.nativeModuleExists && <Text style={styles.module}>crashlytics()</Text>}
-            {firebase.database.nativeModuleExists && <Text style={styles.module}>database()</Text>}
-            {firebase.firestore.nativeModuleExists && <Text style={styles.module}>firestore()</Text>}
-            {firebase.functions.nativeModuleExists && <Text style={styles.module}>functions()</Text>}
-            {firebase.iid.nativeModuleExists && <Text style={styles.module}>iid()</Text>}
-            {firebase.invites.nativeModuleExists && <Text style={styles.module}>invites()</Text>}
-            {firebase.links.nativeModuleExists && <Text style={styles.module}>links()</Text>}
-            {firebase.messaging.nativeModuleExists && <Text style={styles.module}>messaging()</Text>}
-            {firebase.notifications.nativeModuleExists && <Text style={styles.module}>notifications()</Text>}
-            {firebase.perf.nativeModuleExists && <Text style={styles.module}>perf()</Text>}
-            {firebase.storage.nativeModuleExists && <Text style={styles.module}>storage()</Text>}
-          </View>
-        </View>
-      </ScrollView>
-    );
-  }
-}
+// import React from 'react';
+// import { StyleSheet, Platform, Image, Text, View, ScrollView,TouchableOpacity,TouchableHighlight } from 'react-native';
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  logo: {
-    height: 120,
-    marginBottom: 16,
-    marginTop: 32,
-    width: 120,
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
-  modules: {
-    margin: 20,
-  },
-  modulesHeader: {
-    fontSize: 16,
-    marginBottom: 8,
-  },
-  module: {
-    fontSize: 14,
-    marginTop: 4,
-    textAlign: 'center',
-  }
-});
+// import firebase from 'react-native-firebase';
+// var config = {
+//   apiKey: "AIzaSyDM-baYsuac1CX_0otr00pvXrGtZeU-QjY",
+//   authDomain: "testingfirebase-2bfc6.firebaseapp.com",
+//   databaseURL: "https://testingfirebase-2bfc6.firebaseio.com",
+//   projectId: "testingfirebase-2bfc6",
+//   storageBucket: "testingfirebase-2bfc6.appspot.com",
+//   messagingSenderId: "428644299263"
+// };
+// firebase.initializeApp(config);
+// var db = firebase.firestore();
+
+// export default class App extends React.Component {
+//   constructor() {
+//     super();
+//     this.state = {
+//       // firebase things?
+//       users:['manoj'],
+//     };
+//   }
+
+//   componentDidMount() {
+//     // firebase things?
+//     db.collection("users").onSnapshot((querySnapshot)=> {
+//         // var cities = [];
+//         this.state.users=[];
+//         querySnapshot.forEach((doc)=> {
+//             this.state.users.push(doc.data().name);
+//         });
+//         this.setState({
+//           users:this.state.users
+//         })
+//     });
+  
+//   }
+//   addToFireStore=()=>{
+//     db.collection("users").add({
+//      name:'from app',
+//      mobile:{mobile1:1234567890,mobile2:9870122345}
+//   })
+//   .then(function(docRef) {
+//       console.log("Document written with ID: ", docRef.id);
+//   })
+//   .catch(function(error) {
+//       console.error("Error adding document: ", error);
+//   });
+//   }
+
+//   render() {
+//     return (
+//           <View style={{flex:1,justifyContent:'center',alignItems:'center'}}>
+//             <View style={{flex:1}}>
+//              <TouchableOpacity onPress={this.addToFireStore}>
+//                 <Text style={{flex:1}}>add to fire store</Text>
+//                </TouchableOpacity>
+//              </View>
+//              <View style={{flex:1,justifyContent:'center',alignItems:'center'}}>
+//              {
+//                this.state.users.map((val,key)=>{
+//                 return <Text style={{flex:1}}>{val}</Text>
+//                })
+//              }
+//              </View>
+//         </View>
+//     );
+//   }
+// }
+
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     justifyContent: 'center',
+//     alignItems: 'center',
+//     backgroundColor: '#F5FCFF',
+//   },
+//   logo: {
+//     height: 120,
+//     marginBottom: 16,
+//     marginTop: 32,
+//     width: 120,
+//   },
+//   welcome: {
+//     fontSize: 20,
+//     textAlign: 'center',
+//     margin: 10,
+//   },
+//   instructions: {
+//     textAlign: 'center',
+//     color: '#333333',
+//     marginBottom: 5,
+//   },
+//   modules: {
+//     margin: 20,
+//   },
+//   modulesHeader: {
+//     fontSize: 16,
+//     marginBottom: 8,
+//   },
+//   module: {
+//     fontSize: 14,
+//     marginTop: 4,
+//     textAlign: 'center',
+//   }
+// });
