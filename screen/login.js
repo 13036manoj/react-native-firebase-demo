@@ -38,12 +38,13 @@ export default class Login extends React.Component {
           // login with credential
           const currentUser = await firebase.auth().signInAndRetrieveDataWithCredential(credential);
              if(currentUser.user){
+
                 this.props.navigation.navigate('Main')
              }
-          console.info(JSON.stringify(currentUser.user.toJSON()))
+          console.log(JSON.stringify(currentUser.user.toJSON()))
         } catch (e) {
           console.error(e);
-          alert(JSON.stringify(e))
+          // alert(JSON.stringify(e))
         }
       }
      // Calling this function will open Google for login.
@@ -58,12 +59,15 @@ export default class Login extends React.Component {
       const credential = firebase.auth.GoogleAuthProvider.credential(data.idToken, data.accessToken)
       // login with credential
       const currentUser = await firebase.auth().signInAndRetrieveDataWithCredential(credential);
-  
-      console.info(JSON.stringify(currentUser.user.toJSON()));
+      if(currentUser.user){
+        console.log(' currentUser of google login',currentUser);
+        this.props.navigation.navigate('Main')
+     }
     } catch (e) {
       console.error(e);
     }
   }
+
   render() {
     return (
       <View style={styles.container}>

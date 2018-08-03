@@ -19,13 +19,17 @@ import Loading from './screen/loading'
 import SignUp from './screen/signUp'
 import Login from './screen/login'
 import Main from './screen/main'
+import ChatList from './screen/chat_list'
+import Chating from './screen/chating'
 // create our app's navigation stack
 const App = SwitchNavigator(
   {
     Loading,
     SignUp,
     Login,
-    Main
+    Main,
+    ChatList,
+    Chating
   },
   {
     initialRouteName: 'Loading'
@@ -141,3 +145,4 @@ export default App
 //     textAlign: 'center',
 //   }
 // });
+

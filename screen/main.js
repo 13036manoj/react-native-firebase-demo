@@ -3,7 +3,8 @@ import React from 'react'
 import { StyleSheet, Platform, Image, Text, View,TouchableOpacity } from 'react-native'
 import firebase from 'react-native-firebase'
 var db = firebase.firestore();
-var unsubscribe = db.collection("cities").onSnapshot(function (querySnaphot) {
+var firebase_msg=firebase.messaging();
+var unsubscribe = db.collection("users").onSnapshot(function (querySnaphot) {
     // do something with the data.
   });
 export default class Main extends React.Component {
@@ -11,6 +12,9 @@ export default class Main extends React.Component {
   componentDidMount() {
     const { currentUser } = firebase.auth()
     this.setState({ currentUser })
+    firebase_msg.getToken().then((token) => {
+       console.log('token in main page ',token)
+     });
     db.collection("users").onSnapshot((querySnapshot)=> {
                 this.state.users=[];
                 querySnapshot.forEach((doc)=> {
@@ -20,6 +24,26 @@ export default class Main extends React.Component {
                   users:this.state.users
                 })
             });
+
+    this.onTokenRefreshListener = firebase.messaging().onTokenRefresh(fcmToken => {
+        db.collection("users").doc(currentUser.id).get()
+        .then((DocRef)=>{
+            DocRef.set({
+                fcmToken:fcmToken
+            }).then((doc)=>{
+                console.log('success in on refresh token catch',doc)
+
+            })
+            .catch((error)=>{
+                console.log('error in on refresh token catch',error)
+            })
+
+        })
+        .catch((error)=>{
+            console.log('')
+        })
+        // Process your token as required
+    });
 }
 addToFireStore=()=>{
     db.collection("users").add({
@@ -48,6 +72,9 @@ logoutUser=()=>{
     componentWillUnmount(){
         unsubscribe()
     }
+ gotoChatlist=()=>{
+        this.props.navigation.navigate('ChatList');
+    }
 render() {
  const { currentUser } = this.state
  return (
@@ -57,12 +84,19 @@ render() {
                 <Text>
                  Hi {currentUser && currentUser.email}!
                 </Text>
-                <TouchableOpacity onPress={this.logoutUser} style={{backgroundColor:'#7f7f7f'}}>
-                        <Text>Logout ></Text>
-                </TouchableOpacity>
+                <View style={{flexDirection:'row',justifyContent:'space-between',marginTop:10}}>
+                    <TouchableOpacity onPress={this.gotoChatlist} style={{backgroundColor:'#7f7f7f'}}>
+                            <Text>go to chat list page</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={this.logoutUser} style={{backgroundColor:'#7f7f7f'}}>
+                            <Text>Logout ></Text>
+                    </TouchableOpacity>
+               </View> 
+               
          </View>
-          <View style={{flex:1}}>
-             <TouchableOpacity onPress={this.addToFireStore} style={{flex:1,backgroundColor:'green'}}>
+          <View style={styles.container}>
+          <Text>this is chat application</Text>
+             {/* <TouchableOpacity onPress={this.addToFireStore} style={{flex:1,backgroundColor:'green'}}>
                  <Text>add to fire store</Text>
                 </TouchableOpacity>
               </View>
@@ -71,7 +105,7 @@ render() {
                     this.state.users.map((val,key)=>{
                         return <Text style={{flex:1}}>{val}</Text>
                     })
-                    }
+                    } */}
              </View>
       </View>
     )
